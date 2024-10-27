@@ -4,6 +4,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.InputMismatchException;
 
 public class Conversion{
     String base_code;
@@ -18,6 +19,7 @@ public class Conversion{
         URI direccion = URI.create("https://v6.exchangerate-api.com/v6/3b122b56c3db3bd5f6eccc35/pair/"
                 +base_code+"/"+target_code+"/"+cantidad);
 
+
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(direccion)
@@ -28,9 +30,8 @@ public class Conversion{
                     .send(request, HttpResponse.BodyHandlers.ofString());
             return  new Gson().fromJson(response.body(),Moneda.class);
         } catch (Exception  e) {
-            throw new RuntimeException("No encontre esa pelicula.");
+            throw new InputMismatchException("No es posible hacer la conversion.");
         }
-
     }
 
 
